@@ -19,10 +19,12 @@
 
 
 ## 🔍 Analysis 
-Using [Cipher Identifier](https://www.dcode.fr/cipher-identifier), it is identified that the ROT-13 Cipher is used to obtain the cipher given.
+1. Fire up Flare-VM, download the file, and unzip the file.
+2. I noticed that the files are in .evtx extensions, thus I opened them using Windows Event Viewer. Only the *System* and *Security* have events, *Application* does not have any.
+   
+   ![image](https://github.com/user-attachments/assets/490333c6-89ea-4209-8b5f-e855ec1c0c41)
 
-![image](https://github.com/user-attachments/assets/80706fdc-cc6f-4a0a-99a9-7982508ae883)
-
+   ![image](https://github.com/user-attachments/assets/5ef53534-db52-469d-bfd3-739262e90cd1)
 
 
 ## 🛠️ Solution
