@@ -6,24 +6,20 @@
 
 
 ## Approach
-1. I started by checking the file type:
+1. Opening the transmissions.wav file, I was hit with some seriously loud and eerie sounds—definitely a horror vibe! After trying basic steganography techniques and getting nowhere, I took a breather and thought about the challenge title.
+
+2. ChatGPT suggested that "1200" relates to modulated data signals, which led me to use a tool called **Minimodem**,  a command-line program which decodes (or generates) audio modem tones at any specified baud rate, using various framing protocols. It acts a general-purpose software FSK modem, and includes support for various standard FSK protocols such as Bell103, Bell202, RTTY, TTY/TDD, NOAA SAME, and Caller-ID. After installing it, I ran:
    
    ```
-   zulu: compress'd data 16 bits
-   ```
-   Looks like it's compressed! But running *cat* just produced gibberish..
+   minimodem --rx 1200 -f transmissions.wav
+   ``` 
 
-   ![image](https://github.com/user-attachments/assets/36c01507-4f7b-4aea-832b-77b87fb77706)
+3. Success! I decoded a hidden message along with the flag!
 
-2. After a bit of head-scratching, I realized the file might need a .Z extension for uncompress to work properly with the help of ChatGPT. So, I renamed it to zulu.Z
-   
-3. With the file renamed, uncompress worked its magic. I ran cat again, and boom—there was the flag!
-   
-   ![image](https://github.com/user-attachments/assets/1ff03c45-cb5d-4cb7-b54e-efc6ad9d160a)
-
+   ![image](https://github.com/user-attachments/assets/f400721b-cf27-4aef-a88d-83dff8b2a443)
    
 ## Flag: 
-flag{74235a9216ee609538022e6689b4de5c}
+flag{f28d133e7174c412c1e39b4a84158fa3}
 
 
 
