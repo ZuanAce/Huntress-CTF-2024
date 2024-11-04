@@ -1,8 +1,7 @@
 # PillowFight ✅
 
 ## Challenge Description
-> ![image](https://github.com/user-attachments/assets/ed488619-05c7-4c9d-b40f-a350d761df7d)
-  
+> ![Screenshot 2024-11-04 100601](https://github.com/user-attachments/assets/2ca3e185-2ef4-4fde-9e70-3a2b2ecd790b)
 
 ## Approach
 1. At first glance, it looked like a regular music file: song.mp3. Nothing unusual, right? But something about it seemed… strange. My instinct told me to dig a little deeper, so instead of hitting play, I checked the file type directly.
