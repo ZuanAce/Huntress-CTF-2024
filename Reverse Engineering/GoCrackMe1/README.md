@@ -5,8 +5,8 @@
 
 
 ## Approach
-1. You’re given a ZIP file which, when you unzip, gives a Go binary file. This was my first time dealing with a Go binary. And in case you don’t know, Go binaries are a lot harder to crack than C binaries.
-2. Using IDA, decompile the file and found the `main.main function`.
+1. I was handed a ZIP file that contained a single Go binary file. Go binaries are notoriously tougher to crack compared to C binaries due to their structure and optimizations.
+2. It was time to fire up IDA Pro! After a bit of digging, I found the `main.main function`.
 
    ![image](https://github.com/user-attachments/assets/e959e313-61cd-44a5-8cbe-a5749ae8f94d)
 
@@ -28,8 +28,10 @@
    v4 = runtime_slicebytetostring(0LL, v1, 38LL);
    ```
    The `v1` slice (which now contains the XOR-deciphered bytes) is converted into a string `v4`.
+   
+   So, all I had to do was XOR the string with 0x56, and I should get the hidden message.
 
-5. To decrypt the obfuscated string `"0:71-44coc``3dg0cc3cnf2cno0e24435f0n+"` using XOR with 0x56, I wrote a quick Python script for this.
+5. To decrypt the obfuscated string `"0:71-44coc``3dg0cc3cnf2cno0e24435f0n+"` using XOR with 0x56, I wrote a quick Python script for this:
 
    ```python
    # Hardcoded string from the code
