@@ -5,40 +5,53 @@
 
 
 ## Approach
-1. Since it’s a web challenge, I went straight to inspect the page and spotted a suspicious auth cookie.
+1. You’re given a ZIP file which, when you unzip, gives a Go binary file. This was my first time dealing with a Go binary. And in case you don’t know, Go binaries are a lot harder to crack than C binaries.
+2. Using IDA, decompile the file and found the `main.main function`.
 
-   ![image](https://github.com/user-attachments/assets/c642f223-3b67-453b-9dc7-ba0c5e10fbcd)
+   ![image](https://github.com/user-attachments/assets/e959e313-61cd-44a5-8cbe-a5749ae8f94d)
 
-2. Ran the cookie through [Cipher Identifier](https://www.dcode.fr/cipher-identifier) and found it’s base64 encoded! Decoding it gave me **testuser.0.1730771528**.
+3. With some assistance from ChatGPT, I managed to understand the important parts of the code:
 
-   ![image](https://github.com/user-attachments/assets/ebbc5002-f270-4410-8a19-9215ccf2521d)
+   ```C
+   qmemcpy(v12, "0:71-44coc``3dg0cc3c`nf2cno0e24435f0n+", sizeof(v12));
+   ```
+   The string `"0:71-44coc``3dg0cc3cnf2cno0e24435f0n+"` is copied into `v12`, a buffer of 38 bytes.
 
-3. To gain admin access, I tweaked the cookie to **admin.1.0.1730771528**, encoded it back, set the cookie, and refreshed the page. Just like that—I was in as admin!
+   ```C
+   v1 = (uint8 *)runtime_makeslice((runtime__type *)&stru_48BA20, 38LL, 38LL);
+   for (i = 0LL; i < 38; ++i)
+       v1[i] = v12[i] ^ 0x56;
+   ```
+   This loop takes each byte from `v12` and XORs it with 0x56, storing the result in `v1`. This is a common obfuscation technique used to hide strings. We can decode it to reveal the hidden message.
 
-   ![image](https://github.com/user-attachments/assets/a43085df-17d7-46c9-ad5d-1258ea128a44)
+   ```C
+   v4 = runtime_slicebytetostring(0LL, v1, 38LL);
+   ```
+   The `v1` slice (which now contains the XOR-deciphered bytes) is converted into a string `v4`.
 
-   ![image](https://github.com/user-attachments/assets/cb532c53-1b24-4f28-8f36-6f509fe6854b)
+5. To decrypt the obfuscated string `"0:71-44coc``3dg0cc3cnf2cno0e24435f0n+"` using XOR with 0x56, I wrote a quick Python script for this.
 
-4. Looked around but didn’t see a flag. Then, I noticed an API documentation section and found I could edit plant alerts and send commands. Jackpot!
+   ```python
+   # Hardcoded string from the code
+   original_string = "0:71-44coc``3dg0cc3c`nf2cno0e24435f0n+"
+   xor_key = 0x56
+   flag_bytes = []
 
-   ![image](https://github.com/user-attachments/assets/e6aa0b89-8822-4d59-b841-cebf35bef9ba)
+   # XOR each byte with the key
+   for char in original_string:
+       flag_bytes.append(chr(ord(char) ^ xor_key))
 
-   It turns out I can edit the plant's alert and send command, and the logs will capture the output!
+   # Join the bytes to form the flag string
+   flag = ''.join(flag_bytes)
+   print("Extracted flag:", flag)
+   ```
 
-6. I set the alert command to ls and ran it through the API, which revealed a flag.txt file in the logs.
-   
-   ![image](https://github.com/user-attachments/assets/1e85e534-09f2-4db7-9caa-74e94ab08abd) ![image](https://github.com/user-attachments/assets/421c3c22-10a3-436e-8ab7-28b8df040524)
+7. Running the script reveals the flag!!
 
-   ![image](https://github.com/user-attachments/assets/ff61283e-8785-490d-91b3-3b66c59aeaaa)
-
-8. Updated the command to cat flag.txt, executed it, checked the logs, and there it was—the flag!
-
-   ![image](https://github.com/user-attachments/assets/f281241a-2cd9-459d-bdc0-c954e1c8d888)
-
-   ![image](https://github.com/user-attachments/assets/ee664308-f62d-4e94-9140-59a1f923fc22)
+   ![image](https://github.com/user-attachments/assets/aa52e274-f459-47fe-be87-dbb8d65aa60a)
   
 ## Flag: 
-flag{c29c4d53fc432f7caeb573a9f6eae6c6}
+flag{bb59566e21f55e5680d589f3dbbec0f8}
 
 
 
