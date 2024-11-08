@@ -4,12 +4,13 @@
 > ![image](https://github.com/user-attachments/assets/3f3413c3-2367-4924-b0c7-b80fd1eec11a)
 
 ## Approach
-1. Since it’s a web challenge, I went straight to inspect the page and spotted a suspicious auth cookie.
+1. You’re given stack_it.bin file. Running the file command on it shows:
 
-   ![image](https://github.com/user-attachments/assets/c642f223-3b67-453b-9dc7-ba0c5e10fbcd)
+   ```
+   stack_it.bin: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), statically linked, stripped
+   ```
 
-2. Ran the cookie through [Cipher Identifier](https://www.dcode.fr/cipher-identifier) and found it’s base64 encoded! Decoding it gave me **testuser.0.1730771528**.
-
+2. Using IDA Pro
    ![image](https://github.com/user-attachments/assets/ebbc5002-f270-4410-8a19-9215ccf2521d)
 
 3. To gain admin access, I tweaked the cookie to **admin.1.0.1730771528**, encoded it back, set the cookie, and refreshed the page. Just like that—I was in as admin!
