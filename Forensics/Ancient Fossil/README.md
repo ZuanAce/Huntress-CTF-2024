@@ -11,7 +11,7 @@
 
 2. Since I wasn’t sure what this hash meant, I decided to Google it. That led me to discover that this was related to something called [Fossil SCM](https://fossil-scm.org/home/uv/download.html).
 
-   ![image](https://github.com/user-attachments/assets/1e9d919c-fc00-47a1-aeb0-03e762e71376)
+   ![image](https://github.com/user-attachments/assets/07be4250-65b3-426b-a39d-b1f10e7ab6a3)
 
 3. Fossil SCM is a version control system that can manage repositories similar to Git. I realized that the .fossil file I had could potentially be seen as a Git repository using Fossil SCM tools.
    So, I installed Fossil and used the export command to convert the file to a Git repository.<br>I ran the following command:
