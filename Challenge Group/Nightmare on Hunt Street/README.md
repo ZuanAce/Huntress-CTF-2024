@@ -1,12 +1,9 @@
 # Nightmare on Hunt Street ✅
 
-**Description:**
+## Challenge Description
 
-<small>Author: Austin Worline, Jose Oregon, and Adrian Garcia</small><br><br><i> DeeDee hears the screams,<br> In the logs, a chilling trace—<br> Freddy's waiting near.<br> </i> <br><br> Are you able to unravel the attack chain? The first question is:<br><br> <b>What is the IP address of the host that the attacker used?</b> <br><br> <i><b>NOTE: Flags for Part #1 to Part #5 will all be human-readable answers and in a non-standard flag format. You will use the same downloadable attachment and log files to answer all the questions.</i></b> <br><br> <b>Download the file(s) below.</b>
+![image](https://github.com/user-attachments/assets/f094ef40-4f42-44e5-bf11-cefbfe06fa07)
 
-**Category:** Forensics
-
-**Difficulty:** easy
 
 ## Solution Part 1
 
