@@ -1,6 +1,8 @@
 
 # Little Shop of Hashes ✅
 
+## Challenge Description
+
 ![image](https://github.com/user-attachments/assets/56de7ad9-a989-4df3-badd-27ab9601e420)
 
 
