@@ -2,12 +2,7 @@
 
 ## Challenge Description
 
-<small>Author: @JohnHammond</small><br><br>This is a dumb challenge. I'm sorry. <br><br> <b>Download the file(s) below.</b>
-
-
-## Files
-
-* [base64by32.zip](<files/base64by32.zip>)
+> <small>Author: @JohnHammond</small><br><br>This is a dumb challenge. I'm sorry. <br><br> <b>Download the file(s) below.</b>
 
 ## Approach
 
@@ -27,7 +22,4 @@ for _ in range(32):
 print(data)
 ```
 
-Refinery can also just do this natively:
-```
-emit base64by32 | r.loop 32 b64
-```
+
